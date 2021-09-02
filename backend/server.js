@@ -6,12 +6,12 @@ const passportLocal = require("passport-local").Strategy
 const cookieParser = require("cookie-parser")
 const bcrypt = require("bcryptjs")
 const session = require("express-session")
-const bodyParser = require("body-parser")
 const app = express()
+const fs = require("fs")
 const User = require("./user")
-//----------------------------------------- END OF IMPORTS---------------------------------------------------
+
 mongoose.connect(
-    "mongodb+srv://admin:<password>@cluster0.2gcse.mongodb.net/myFirstDatabase?retryWrites=true&w=majority",
+    "mongodb+srv://admin:admin@cluster0.2gcse.mongodb.net/pretraga-firmi?retryWrites=true&w=majority",
     {
         useNewUrlParser: true,
         useUnifiedTopology: true,
@@ -37,12 +37,9 @@ app.use(
         saveUninitialized: true,
     })
 )
-app.use(cookieParser("secretcode"))
 app.use(passport.initialize())
 app.use(passport.session())
-require("./passportConfig")(passport)
-
-//----------------------------------------- END OF MIDDLEWARE---------------------------------------------------
+require("./auth")(passport)
 
 // Routes
 app.post("/login", (req, res, next) => {
@@ -77,10 +74,21 @@ app.post("/register", (req, res) => {
 })
 
 app.get("/user", (req, res) => {
-    res.send(req.user) // The req.user stores the entire user that has been authenticated inside of it.
+    res.send({
+        users: req.user,
+    }) // The req.user stores the entire user that has been authenticated inside of it.
 })
-//----------------------------------------- END OF ROUTES---------------------------------------------------
-//Start Server
+
+//Json data
+
+const delatnostiRaw = fs.readFileSync("./json/delatnosti.json")
+const delatnosti = JSON.parse(delatnostiRaw)
+
+app.get("/delatnosti", (req, res) => {
+    res.send(delatnosti)
+})
+
+//Start server
 app.listen(5000, () => {
     console.log("Server Has Started")
 })

@@ -1,0 +1,57 @@
+[
+    {
+        "oblast": "Poljoprivreda",
+        "naziv": "Gajenje žita, leguminoza i uljarica",
+        "sifra": "0111"
+    },
+    {
+        "oblast": "Poljoprivreda",
+        "naziv": "Uzgoj konja i drugih kopitara",
+        "sifra": "0143"
+    },
+    {
+        "oblast": "Poljoprivreda",
+        "naziv": "Seča drveća",
+        "sifra": "0220"
+    },
+    {
+        "oblast": "Poljoprivreda",
+        "naziv": "Uzgoj živine",
+        "sifra": "0147"
+    },
+    {
+        "oblast": "Preradjivacka industrija",
+        "naziv": "Prerada i konzervisanje mesa",
+        "sifra": "1011"
+    },
+    {
+        "oblast": "Preradjivacka industrija",
+        "naziv": "Proizvodnja ulja i masti",
+        "sifra": "1041"
+    },
+    {
+        "oblast": "Preradjivacka industrija",
+        "naziv": "Proizvodnja sladoleda",
+        "sifra": "1052"
+    },
+    {
+        "oblast": "Preradjivacka industrija",
+        "naziv": "Štampanje novina",
+        "sifra": "1811"
+    },
+    {
+        "oblast": "Poslovanje nekretninama",
+        "naziv": "Kupovina i prodaja vlastitih nekretnina",
+        "sifra": "6810"
+    },
+    {
+        "oblast": "Poslovanje nekretninama",
+        "naziv": "Delatnost agencija za nekretnine",
+        "sifra": "6831"
+    },
+    {
+        "oblast": "Poslovanje nekretninama",
+        "naziv": "Upravljanje nekretninama za naknadu",
+        "sifra": "6832"
+    }
+]

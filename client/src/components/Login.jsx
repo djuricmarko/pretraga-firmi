@@ -1,16 +1,52 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useHistory } from "react-router-dom"
 import { Button, Flex, FormControl, Heading, Input } from "@chakra-ui/react"
+import axios from "axios"
 
 const Login = () => {
+    const [loginUsername, setLoginUsername] = useState("")
+    const [loginPassword, setLoginPassword] = useState("")
+    const [user, setUser] = useState(null)
+    const [message, setMessage] = useState("")
     const history = useHistory()
-    const [email, setEmail] = useState("")
-    const [password, setPassword] = useState("")
 
-    const handleRegister = async (e) => {
+    const handleLoginUser = (e) => {
         e.preventDefault()
-        history.push("/")
+        try {
+            axios({
+                method: "POST",
+                data: {
+                    username: loginUsername,
+                    password: loginPassword,
+                },
+                withCredentials: true,
+                url: "http://localhost:5000/login",
+            }).then((res) => {
+                console.log(res)
+                if (res.data === "Successfully Authenticated") {
+                    history.push("/pretraga")
+                } else if (!user) {
+                    setMessage("Wrong username or password")
+                }
+            })
+        } catch (err) {
+            console.warn(err)
+        }
     }
+
+    const getUser = () => {
+        axios({
+            method: "GET",
+            withCredentials: true,
+            url: "http://localhost:5000/user",
+        }).then((res) => {
+            setUser(res.data.users)
+        })
+    }
+
+    useEffect(() => {
+        getUser()
+    }, [])
 
     return (
         <Flex
@@ -21,20 +57,19 @@ const Login = () => {
             backgroundColor="blue.100"
         >
             <Heading mb="30px" textAlign="center">
-                Napravi svoj nalog. 👋
+                Uloguj se. 👋
             </Heading>
-            <form onSubmit={handleRegister}>
+            <form onSubmit={handleLoginUser}>
                 <FormControl w="300px">
                     <Input
-                        type="email"
-                        placeholder="Email"
+                        placeholder="Username"
                         variant="filled"
                         border="2px"
                         borderColor="blue.700"
                         color="black"
                         my="10px"
                         _placeholder={{ color: "black" }}
-                        onChange={(e) => setEmail(e.target.value)}
+                        onChange={(e) => setLoginUsername(e.target.value)}
                     />
                     <Input
                         type="password"
@@ -44,12 +79,15 @@ const Login = () => {
                         color="black"
                         my="10px"
                         _placeholder={{ color: "black" }}
-                        onChange={(e) => setPassword(e.target.value)}
+                        onChange={(e) => setLoginPassword(e.target.value)}
                     />
                     <Button w="full" mt="10px" type="submit">
-                        Register
+                        Login
                     </Button>
                 </FormControl>
+                <Heading mt="20px" textAlign="center" size="sm">
+                    {message}
+                </Heading>
             </form>
         </Flex>
     )
