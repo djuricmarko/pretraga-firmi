@@ -34,7 +34,7 @@ const Login = () => {
             url: "http://localhost:5000/user",
         }).then((res) => {
             if (res.data) {
-                localStorage.setItem("logedUser", res?.data.users.username)
+                localStorage.setItem("logedUser", "authed")
             } else {
                 localStorage.removeItem("logedUser")
             }

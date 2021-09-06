@@ -35,6 +35,7 @@ const Firme = ({ sifra }) => {
                             p="5px"
                             border="1px solid black"
                             listStyleType="none"
+                            rounded="md"
                             key={firma.sifra}
                         >
                             <Heading size="xl">
