@@ -1,5 +1,6 @@
 import { Box } from "@chakra-ui/react"
 import { Route, Switch } from "react-router-dom"
+import ProtectedRoute from "../lib/ProtectedRoute"
 import Login from "./Login"
 import Main from "./Main"
 import Pretraga from "./Pretraga"
@@ -12,7 +13,9 @@ function App() {
                 <Route exact path="/" component={Main} />
                 <Route exact path="/login" component={Login} />
                 <Route exact path="/register" component={Register} />
-                <Route exact path="/pretraga" component={Pretraga} />
+                <ProtectedRoute exact path="/pretraga">
+                    <Pretraga />
+                </ProtectedRoute>
             </Switch>
         </Box>
     )

@@ -26,7 +26,7 @@ app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
 app.use(
     cors({
-        origin: "http://localhost:3000", // <-- location of the react app were connecting to
+        origin: "http://localhost:3000",
         credentials: true,
     })
 )
@@ -37,19 +37,27 @@ app.use(
         saveUninitialized: true,
     })
 )
+app.use(cookieParser("secretcode"))
 app.use(passport.initialize())
 app.use(passport.session())
 require("./auth")(passport)
 
 // Routes
-app.post("/login", (req, res, next) => {
+app.post("/login", async (req, res, next) => {
     passport.authenticate("local", (err, user, info) => {
         if (err) throw err
-        if (!user) res.send("No User Exists")
-        else {
+        if (!user) {
+            res.status(200).json({
+                status: false,
+                result: "Wrong username or password.",
+            })
+        } else {
             req.logIn(user, (err) => {
                 if (err) throw err
-                res.send("Successfully Authenticated")
+                res.status(200).json({
+                    status: true,
+                    result: "Successfully authenticated.",
+                })
                 console.log(req.user)
             })
         }
@@ -59,7 +67,11 @@ app.post("/login", (req, res, next) => {
 app.post("/register", (req, res) => {
     User.findOne({ username: req.body.username }, async (err, doc) => {
         if (err) throw err
-        if (doc) res.send("User Already Exists")
+        if (doc)
+            res.status(200).json({
+                status: false,
+                result: "User Already Exists",
+            })
         if (!doc) {
             const hashedPassword = await bcrypt.hash(req.body.password, 10)
 
@@ -68,7 +80,10 @@ app.post("/register", (req, res) => {
                 password: hashedPassword,
             })
             await newUser.save()
-            res.send("User Created")
+            res.status(200).json({
+                status: false,
+                result: "User created",
+            })
         }
     })
 })
@@ -76,7 +91,7 @@ app.post("/register", (req, res) => {
 app.get("/user", (req, res) => {
     res.send({
         users: req.user,
-    }) // The req.user stores the entire user that has been authenticated inside of it.
+    })
 })
 
 //Json data
@@ -84,8 +99,14 @@ app.get("/user", (req, res) => {
 const delatnostiRaw = fs.readFileSync("./json/delatnosti.json")
 const delatnosti = JSON.parse(delatnostiRaw)
 
+const firmeRaw = fs.readFileSync("./json/firme.json")
+const firme = JSON.parse(firmeRaw)
+
 app.get("/delatnosti", (req, res) => {
     res.send(delatnosti)
+})
+app.get("/firme", (req, res) => {
+    res.send(firme)
 })
 
 //Start server

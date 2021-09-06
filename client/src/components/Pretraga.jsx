@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react"
-import { Button, Flex, Select } from "@chakra-ui/react"
+import { Flex, Select } from "@chakra-ui/react"
+import Firme from "./Firme"
 
 const Pretraga = () => {
     const [delatnosti, setDelatnosti] = useState(null)
+    const [selected, setSelected] = useState(null)
 
     const handleFetchDelatnosti = async () => {
         try {
@@ -19,39 +21,37 @@ const Pretraga = () => {
         }
     }
 
+    const renderData = () => (
+        <Select
+            w="500px"
+            mt="40px"
+            placeholder="Izaberite delatnost"
+            borderColor="black"
+            _hover={{ borderColor: "gray.500" }}
+            onChange={(e) => {
+                setSelected(e.target.value.substring(0, 4))
+            }}
+        >
+            {delatnosti?.map((i) => (
+                <option key={i.sifra}>{`${i.sifra} | ${i.naziv}`}</option>
+            ))}
+        </Select>
+    )
+
     useEffect(() => {
         handleFetchDelatnosti()
-    })
+    }, [])
 
     return (
         <Flex
+            flexDirection="column"
             w="full"
             h="100vh"
-            justify="center"
             alignItems="center"
             bg="green.200"
         >
-            <Select
-                w="300px"
-                placeholder="Izaberite delatnost"
-                borderColor="black"
-                _hover={{ borderColor: "gray.500" }}
-            >
-                {delatnosti?.map((i) => (
-                    <option key={i.sifra}>{i.oblast}</option>
-                ))}
-                <option value="option1">Option 1</option>
-                <option value="option2">Option 2</option>
-                <option value="option3">Option 3</option>
-            </Select>
-            <Button
-                mx="10px"
-                variant="outline"
-                borderColor="black"
-                _hover={{ bg: "black", color: "white" }}
-            >
-                Pretrazi
-            </Button>
+            {renderData()}
+            <Firme sifra={selected} />
         </Flex>
     )
 }

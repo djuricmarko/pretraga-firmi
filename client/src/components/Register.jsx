@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useHistory } from "react-router-dom"
 import { Button, Flex, FormControl, Heading, Input } from "@chakra-ui/react"
 import axios from "axios"
@@ -10,23 +10,28 @@ const Register = () => {
 
     const handleLoginUser = (e) => {
         e.preventDefault()
-        try {
-            axios({
-                method: "POST",
-                data: {
-                    username: loginUsername,
-                    password: loginPassword,
-                },
-                withCredentials: true,
-                url: "http://localhost:5000/register",
-            }).then((res) => {
-                console.log(res)
+        axios({
+            method: "POST",
+            data: {
+                username: loginUsername,
+                password: loginPassword,
+            },
+            withCredentials: true,
+            url: "http://localhost:5000/register",
+        })
+            .then((res) => {
                 history.push("/login")
             })
-        } catch (err) {
-            console.warn(err)
-        }
+            .catch((err) => {
+                console.warn(err)
+            })
     }
+
+    useEffect(() => {
+        if (localStorage.getItem("logedUser")) {
+            history.push("/pretraga")
+        }
+    })
 
     return (
         <Flex
@@ -36,7 +41,6 @@ const Register = () => {
             flexDirection="column"
             backgroundColor="blue.100"
         >
-            {" "}
             <Heading mb="30px" textAlign="center">
                 Napravi svoj nalog. 👋
             </Heading>

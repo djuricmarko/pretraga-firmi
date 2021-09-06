@@ -6,47 +6,46 @@ import axios from "axios"
 const Login = () => {
     const [loginUsername, setLoginUsername] = useState("")
     const [loginPassword, setLoginPassword] = useState("")
-    const [user, setUser] = useState(null)
-    const [message, setMessage] = useState("")
     const history = useHistory()
 
-    const handleLoginUser = (e) => {
+    const handleLoginUser = async (e) => {
         e.preventDefault()
-        try {
-            axios({
-                method: "POST",
-                data: {
-                    username: loginUsername,
-                    password: loginPassword,
-                },
-                withCredentials: true,
-                url: "http://localhost:5000/login",
-            }).then((res) => {
-                console.log(res)
-                if (res.data === "Successfully Authenticated") {
+        axios({
+            method: "POST",
+            data: {
+                username: loginUsername,
+                password: loginPassword,
+            },
+            withCredentials: true,
+            url: "http://localhost:5000/login",
+        })
+            .then((res) => {
+                if (res.data.status) {
                     history.push("/pretraga")
-                } else if (!user) {
-                    setMessage("Wrong username or password")
                 }
             })
-        } catch (err) {
-            console.warn(err)
-        }
-    }
+            .catch((err) => {
+                console.warn(err)
+            })
 
-    const getUser = () => {
         axios({
             method: "GET",
             withCredentials: true,
             url: "http://localhost:5000/user",
         }).then((res) => {
-            setUser(res.data.users)
+            if (res.data) {
+                localStorage.setItem("logedUser", res?.data.users.username)
+            } else {
+                localStorage.removeItem("logedUser")
+            }
         })
     }
 
     useEffect(() => {
-        getUser()
-    }, [])
+        if (localStorage.getItem("logedUser")) {
+            history.push("/pretraga")
+        }
+    }, [history])
 
     return (
         <Flex
@@ -85,9 +84,6 @@ const Login = () => {
                         Login
                     </Button>
                 </FormControl>
-                <Heading mt="20px" textAlign="center" size="sm">
-                    {message}
-                </Heading>
             </form>
         </Flex>
     )

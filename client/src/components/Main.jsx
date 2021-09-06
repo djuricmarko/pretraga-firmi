@@ -1,27 +1,14 @@
-import { Button, Flex, Spinner } from "@chakra-ui/react"
-import axios from "axios"
-import { useEffect, useState } from "react"
-import { Link, Redirect } from "react-router-dom"
+import { useEffect } from "react"
+import { Link, useHistory } from "react-router-dom"
+import { Button, Flex } from "@chakra-ui/react"
 
 const Main = () => {
-    const [user, setUser] = useState(null)
-    const [isLoading, setIsLoading] = useState(false)
-
-    const getUser = () => {
-        setIsLoading(true)
-        axios({
-            method: "GET",
-            withCredentials: true,
-            url: "http://localhost:5000/user",
-        }).then((res) => {
-            setUser(res.data.users)
-            setIsLoading(false)
-        })
-    }
-
+    const history = useHistory()
     useEffect(() => {
-        getUser()
-    }, [])
+        if (localStorage.getItem("logedUser")) {
+            history.push("/pretraga")
+        }
+    }, [history])
 
     const renderNotAuthed = () => (
         <div>
@@ -33,6 +20,7 @@ const Main = () => {
             </Link>
         </div>
     )
+
     return (
         <Flex
             flexDirection="row"
@@ -41,15 +29,7 @@ const Main = () => {
             alignItems="center"
             backgroundColor="blue.100"
         >
-            {!user ? (
-                isLoading ? (
-                    <Spinner size="xl" />
-                ) : (
-                    renderNotAuthed()
-                )
-            ) : (
-                <Redirect to="/pretraga" />
-            )}
+            {renderNotAuthed()}
         </Flex>
     )
 }
