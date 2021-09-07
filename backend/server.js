@@ -33,6 +33,7 @@ app.use(
 app.use(
     session({
         secret: "secretcode",
+        name: "sessionId",
         resave: true,
         saveUninitialized: true,
     })
@@ -81,7 +82,7 @@ app.post("/register", (req, res) => {
             })
             await newUser.save()
             res.status(200).json({
-                status: false,
+                status: true,
                 result: "User created",
             })
         }

@@ -1,16 +1,23 @@
+import { useContext, useEffect } from "react"
 import { Redirect, Route } from "react-router-dom"
+import { AuthContext } from "./AuthContext"
 
-const ProtectedRoute = ({ children, ...rest }) => {
+const ProtectedRoute = ({ Component, ...rest }) => {
+    const { auth } = useContext(AuthContext)
+
+    useEffect(() => {
+        console.log(auth)
+    })
     return (
         <Route
             {...rest}
             render={({ location }) =>
-                localStorage.getItem("logedUser") ? (
-                    children
+                auth ? (
+                    <Component />
                 ) : (
                     <Redirect
                         to={{
-                            pathname: "/login",
+                            pathname: "/",
                             state: { from: location },
                         }}
                     />

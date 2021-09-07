@@ -1,8 +1,30 @@
 [
     {
+        "id": 1,
         "sifra": "0111",
         "naziv": "Zito NS d.o.o.",
         "mesto": "Novi Sad",
+        "kontakt": "062124124"
+    },
+    {
+        "id": 2,
+        "sifra": "1011",
+        "naziv": "Industrija mesa “MATIJEVIĆ”",
+        "mesto": "Beograd",
+        "kontakt": "026 317652"
+    },
+    {
+        "id": 3,
+        "sifra": "6810",
+        "naziv": "SOLIS Nekretnine Novi Sad",
+        "mesto": "Novi Sad",
+        "kontakt": "01121520231"
+    },
+    {
+        "id": 4,
+        "sifra": "1052",
+        "naziv": "Poslastičarnica 'SRCE'",
+        "mesto": "Kragujevac",
         "kontakt": "062124124"
     }
 ]

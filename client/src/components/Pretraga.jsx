@@ -1,24 +1,15 @@
 import { useState, useEffect } from "react"
 import { Flex, Select } from "@chakra-ui/react"
+import { getDelatnosti } from "../api/api"
 import Firme from "./Firme"
 
 const Pretraga = () => {
     const [delatnosti, setDelatnosti] = useState(null)
     const [selected, setSelected] = useState(null)
 
-    const handleFetchDelatnosti = async () => {
-        try {
-            const response = await fetch("http://localhost:5000/delatnosti", {
-                method: "GET",
-                headers: {
-                    "Content-Type": "aplication/json",
-                },
-            })
-            const data = await response.json()
-            setDelatnosti(data)
-        } catch (error) {
-            console.warn(error)
-        }
+    const fetchData = async () => {
+        const data = await getDelatnosti()
+        setDelatnosti(data)
     }
 
     const renderData = () => (
@@ -39,7 +30,7 @@ const Pretraga = () => {
     )
 
     useEffect(() => {
-        handleFetchDelatnosti()
+        fetchData()
     }, [])
 
     return (
